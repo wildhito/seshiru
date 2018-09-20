@@ -12,10 +12,10 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class BookController extends AbstractController
 {
     /**
-     * @Route("/book/add", name="add_book")
+     * @Route("/", name="home")
      * @Template
      */
-    public function add()
+    public function home()
     {
         return [
             "remoteHost" => getenv("REMOTE_HOST"),
