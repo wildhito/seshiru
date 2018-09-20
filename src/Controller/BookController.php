@@ -13,6 +13,7 @@ use App\Service\Stock;
 class BookController extends AbstractController
 {
     private $fetchService;
+    private $stockService;
 
     public function __construct(Fetch $fetchService, Stock $stockService)
     {
