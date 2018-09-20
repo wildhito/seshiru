@@ -18,7 +18,7 @@ class BookController extends AbstractController
     public function add()
     {
         return [
-        	"remoteHost" => getenv("REMOTE_HOST"),
+            "remoteHost" => getenv("REMOTE_HOST"),
             "sheetUrl" => "https://docs.google.com/spreadsheets/d/".getenv("SPREADSHEET_ID")."/edit#gid=1141467398"
         ];
     }
@@ -28,7 +28,7 @@ class BookController extends AbstractController
      */
     public function search(Request $request)
     {
-    	$isbn = $request->query->get("isbn");
+        $isbn = $request->query->get("isbn");
         if (!$isbn) {
             return new JsonResponse([
                 "error" => "L'ISBN est vide !",

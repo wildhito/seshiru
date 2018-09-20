@@ -3,173 +3,173 @@
 {% block title %}Entrée en stock | Caverne Seshiru{% endblock %}
 
 {% block body %}
-	<header>
-		<nav aria-label="breadcrumb">
-		  <ol class="breadcrumb">
-		    <li class="breadcrumb-item">Caverne Seshiru</li>
-		    <li class="breadcrumb-item active" aria-current="page">Entrée en stock</li>
-		  </ol>
-		</nav>
+    <header>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">Caverne Seshiru</li>
+            <li class="breadcrumb-item active" aria-current="page">Entrée en stock</li>
+          </ol>
+        </nav>
 
-		<form id="searchForm" class="container-fluid m-1 p-2">
-			<div class="row form-group">
-			    <input type="text" name="isbn" placeholder="ISBN" class="form-control m-1" style="width: 150px;" required="required">
-				<input type="submit" value="Rechercher" class="btn btn-primary btn-sm m-1">
-			</div>
-		</form>
+        <form id="searchForm" class="container-fluid m-1 p-2">
+            <div class="row form-group">
+                <input type="text" name="isbn" placeholder="ISBN" class="form-control m-1" style="width: 150px;" required="required">
+                <input type="submit" value="Rechercher" class="btn btn-primary btn-sm m-1">
+            </div>
+        </form>
 
-		<form id="addForm" class="container-fluid jumbotron border border-secondary p-3">
-			<div class="row form-group">
-				<input type="text" placeholder="ISBN" name="isbn" class="form-control col-sm m-2">
-				<input type="text" placeholder="Titre" name="title" class="form-control col-sm m-2" required="required">
-				<input type="text" placeholder="Sous-titre" name="subtitle" class="form-control col-sm m-2">
-			</div>
-			<div class="row form-group">
-				<input type="text" placeholder="Auteur" name="author" class="form-control col-sm m-2">
-				<input type="text" placeholder="Dimensions" name="dimensions" class="form-control col-sm m-2">
-				<input type="text" placeholder="Poids" name="weight" class="form-control col-sm m-2">
-			</div>
-			<div class="row form-group">
-				<div class="col-sm">
-					<label for="buyPrice">Prix d'achat (€)</label>
-					<input type="number" step="0.01" name="buyPrice" class="form-control">
-				</div>
-				<div class="col-sm">
-					<label for="buyPrice">Prix de vente (€)</label>
-					<input type="number" step="0.01" name="sellPrice" class="form-control">
-				</div>
-				<div class="col-sm">
-					<label for="postalFees">Frais d'envoi (€)</label>
-					<input type="number" step="0.01" name="postalFees" class="form-control">
-				</div>
-				<div class="col-sm">
-					<label for="buyPrice">Quantité</label>
-					<input type="number" name="quantity" value="1" class="form-control">
-				</div>
-			</div>
-			<input type="submit" id="submitAddForm" value="Ajouter au stock" class="btn btn-primary">
-			<a href="{{ sheetUrl }}"
-			   target="_blank" class="btn btn-link float-right" title="Ouvrir Google Sheets">
-				Consulter le stock
-			</a>
-		</form>
-	</header>
+        <form id="addForm" class="container-fluid jumbotron border border-secondary p-3">
+            <div class="row form-group">
+                <input type="text" placeholder="ISBN" name="isbn" class="form-control col-sm m-2">
+                <input type="text" placeholder="Titre" name="title" class="form-control col-sm m-2" required="required">
+                <input type="text" placeholder="Sous-titre" name="subtitle" class="form-control col-sm m-2">
+            </div>
+            <div class="row form-group">
+                <input type="text" placeholder="Auteur" name="author" class="form-control col-sm m-2">
+                <input type="text" placeholder="Dimensions" name="dimensions" class="form-control col-sm m-2">
+                <input type="text" placeholder="Poids" name="weight" class="form-control col-sm m-2">
+            </div>
+            <div class="row form-group">
+                <div class="col-sm">
+                    <label for="buyPrice">Prix d'achat (€)</label>
+                    <input type="number" step="0.01" name="buyPrice" class="form-control">
+                </div>
+                <div class="col-sm">
+                    <label for="buyPrice">Prix de vente (€)</label>
+                    <input type="number" step="0.01" name="sellPrice" class="form-control">
+                </div>
+                <div class="col-sm">
+                    <label for="postalFees">Frais d'envoi (€)</label>
+                    <input type="number" step="0.01" name="postalFees" class="form-control">
+                </div>
+                <div class="col-sm">
+                    <label for="buyPrice">Quantité</label>
+                    <input type="number" name="quantity" value="1" class="form-control">
+                </div>
+            </div>
+            <input type="submit" id="submitAddForm" value="Ajouter au stock" class="btn btn-primary">
+            <a href="{{ sheetUrl }}"
+               target="_blank" class="btn btn-link float-right" title="Ouvrir Google Sheets">
+                Consulter le stock
+            </a>
+        </form>
+    </header>
 
-	<script>
-		$(document).ready(function() {
-			let remoteUrl = "{{ remoteHost|raw }}";
+    <script>
+        $(document).ready(function() {
+            let remoteUrl = "{{ remoteHost|raw }}";
 
-			$("#searchForm").submit(function (e) {
-				e.preventDefault();
+            $("#searchForm").submit(function (e) {
+                e.preventDefault();
 
-				let pendingClassName = 'btn-secondary';
-				$("#searchForm input[type=submit]").attr("disabled", true);
-				$("#searchForm input[type=submit]").addClass(pendingClassName);
+                let pendingClassName = 'btn-secondary';
+                $("#searchForm input[type=submit]").attr("disabled", true);
+                $("#searchForm input[type=submit]").addClass(pendingClassName);
 
-				let isbn = $("#searchForm input[name=isbn]").val();
-				let searchUrl = remoteUrl + isbn;
+                let isbn = $("#searchForm input[name=isbn]").val();
+                let searchUrl = remoteUrl + isbn;
 
-				console.log("> Loading", searchUrl);
-				$("#iframe").attr("height", $(document).height() - $("header").height() - 15);
-				$("#iframe").attr("src", searchUrl);
-				$("#addForm input[type=submit]").attr("disabled", true);
-				$("#addForm input[name=isbn]").val("");
-				$("#addForm input[name=title]").val("");
-				$("#addForm input[name=subtitle]").val("");
-				$("#addForm input[name=author]").val("");
-				$("#addForm input[name=dimensions]").val("");
-				$("#addForm input[name=weight]").val("");
-				$("#addForm input[name=postalFees]").val("");
-				$("#addForm input[name=quantity]").val(1);
+                console.log("> Loading", searchUrl);
+                $("#iframe").attr("height", $(document).height() - $("header").height() - 15);
+                $("#iframe").attr("src", searchUrl);
+                $("#addForm input[type=submit]").attr("disabled", true);
+                $("#addForm input[name=isbn]").val("");
+                $("#addForm input[name=title]").val("");
+                $("#addForm input[name=subtitle]").val("");
+                $("#addForm input[name=author]").val("");
+                $("#addForm input[name=dimensions]").val("");
+                $("#addForm input[name=weight]").val("");
+                $("#addForm input[name=postalFees]").val("");
+                $("#addForm input[name=quantity]").val(1);
 
-				$.ajax({
-					url: "/book/search",
-					dataType: "json",
-					data: {
-						isbn: isbn
-					},
-					success: function (data, status) {
-						console.info("> Success");
-						$("#error").text("");
-						if (data.isbn) {
-							$("#addForm input[name=isbn]").val(data.isbn);
-						}
-						if (data.title) {
-							$("#addForm input[name=title]").val(data.title);
-						}
-						if (data.subtitle) {
-							$("#addForm input[name=subtitle]").val(data.subtitle);
-						}
-						if (data.author) {
-							$("#addForm input[name=author]").val(data.author);
-						}
-						if (data.dimensions) {
-							$("#addForm input[name=dimensions]").val(data.dimensions);
-						}
-						if (data.weight) {
-							$("#addForm input[name=weight]").val(data.weight);
-						}
-						if (data.postalFees) {
-							$("#addForm input[name=postalFees]").val(data.postalFees);
-						}
-						$("#addForm input[type=submit]").attr("disabled", false);
-						$("#searchForm input[type=submit]").attr("disabled", false);
-						$("#searchForm input[type=submit]").removeClass(pendingClassName);
-					},
-					error: function (xhr, status, error) {
-						console.error("> Error", status, error);
-						$("#addForm input[type=submit]").attr("disabled", false);
-						$("#searchForm input[type=submit]").attr("disabled", false);
-						$("#searchForm input[type=submit]").removeClass(pendingClassName);
-					}
-				});
-			});
+                $.ajax({
+                    url: "/book/search",
+                    dataType: "json",
+                    data: {
+                        isbn: isbn
+                    },
+                    success: function (data, status) {
+                        console.info("> Success");
+                        $("#error").text("");
+                        if (data.isbn) {
+                            $("#addForm input[name=isbn]").val(data.isbn);
+                        }
+                        if (data.title) {
+                            $("#addForm input[name=title]").val(data.title);
+                        }
+                        if (data.subtitle) {
+                            $("#addForm input[name=subtitle]").val(data.subtitle);
+                        }
+                        if (data.author) {
+                            $("#addForm input[name=author]").val(data.author);
+                        }
+                        if (data.dimensions) {
+                            $("#addForm input[name=dimensions]").val(data.dimensions);
+                        }
+                        if (data.weight) {
+                            $("#addForm input[name=weight]").val(data.weight);
+                        }
+                        if (data.postalFees) {
+                            $("#addForm input[name=postalFees]").val(data.postalFees);
+                        }
+                        $("#addForm input[type=submit]").attr("disabled", false);
+                        $("#searchForm input[type=submit]").attr("disabled", false);
+                        $("#searchForm input[type=submit]").removeClass(pendingClassName);
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("> Error", status, error);
+                        $("#addForm input[type=submit]").attr("disabled", false);
+                        $("#searchForm input[type=submit]").attr("disabled", false);
+                        $("#searchForm input[type=submit]").removeClass(pendingClassName);
+                    }
+                });
+            });
 
-			$("#addForm").submit(function (e) {
-				e.preventDefault();
+            $("#addForm").submit(function (e) {
+                e.preventDefault();
 
-				let pendingClassName = 'btn-secondary';
-				let successClassName = 'btn-success';
-				let failClassName = 'btn-danger';
+                let pendingClassName = 'btn-secondary';
+                let successClassName = 'btn-success';
+                let failClassName = 'btn-danger';
 
-				let stateDuration = 2500;
-				let $button = $("#submitAddForm");
-				$button.attr("disabled", true);
-			    $button.addClass(pendingClassName);
-				  
-				$.ajax({
-					url: "/book/stock",
-					dataType: "json",
-					data: {
-						isbn: $("#addForm input[name=isbn]").val(),
-						title: $("#addForm input[name=title]").val(),
-						subtitle: $("#addForm input[name=subtitle]").val(),
-						author: $("#addForm input[name=author]").val(),
-						dimensions: $("#addForm input[name=dimensions]").val(),
-						weight: $("#addForm input[name=weight]").val(),
-						buyPrice: $("#addForm input[name=buyPrice]").val(),
-						sellPrice: $("#addForm input[name=sellPrice]").val(),
-						postalFees: $("#addForm input[name=postalFees]").val(),
-						quantity: $("#addForm input[name=quantity]").val(),
-					},
-					success: function (data, status) {
-						console.info("> Successfully stored book");
-						$button.removeClass(pendingClassName);
-				     	$button.addClass(successClassName);
-				     	$button.val("Enregistré !");
-	                    window.setTimeout(function() { $button.removeClass(successClassName); $button.attr("disabled", false); $button.val("Ajouter au stock"); }, stateDuration);
-					},
-					error: function (xhr, status, error) {
-						console.error("> Error !", status, error);
-						$button.removeClass(pendingClassName);
-				      	$button.addClass(failClassName);
-				      	$button.val("Erreur !");
-				      	window.setTimeout(function() { $button.removeClass(failClassName); $button.attr("disabled", false); $button.val("Ajouter au stock"); }, stateDuration);
-					}
-				});
-			});
-		});
-	</script>
+                let stateDuration = 2500;
+                let $button = $("#submitAddForm");
+                $button.attr("disabled", true);
+                $button.addClass(pendingClassName);
+                  
+                $.ajax({
+                    url: "/book/stock",
+                    dataType: "json",
+                    data: {
+                        isbn: $("#addForm input[name=isbn]").val(),
+                        title: $("#addForm input[name=title]").val(),
+                        subtitle: $("#addForm input[name=subtitle]").val(),
+                        author: $("#addForm input[name=author]").val(),
+                        dimensions: $("#addForm input[name=dimensions]").val(),
+                        weight: $("#addForm input[name=weight]").val(),
+                        buyPrice: $("#addForm input[name=buyPrice]").val(),
+                        sellPrice: $("#addForm input[name=sellPrice]").val(),
+                        postalFees: $("#addForm input[name=postalFees]").val(),
+                        quantity: $("#addForm input[name=quantity]").val(),
+                    },
+                    success: function (data, status) {
+                        console.info("> Successfully stored book");
+                        $button.removeClass(pendingClassName);
+                         $button.addClass(successClassName);
+                         $button.val("Enregistré !");
+                        window.setTimeout(function() { $button.removeClass(successClassName); $button.attr("disabled", false); $button.val("Ajouter au stock"); }, stateDuration);
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("> Error !", status, error);
+                        $button.removeClass(pendingClassName);
+                          $button.addClass(failClassName);
+                          $button.val("Erreur !");
+                          window.setTimeout(function() { $button.removeClass(failClassName); $button.attr("disabled", false); $button.val("Ajouter au stock"); }, stateDuration);
+                    }
+                });
+            });
+        });
+    </script>
 
-	<iframe id="iframe" class="p-3" style="width:100%; position: absolute; bottom: 0;" width="100%" frameborder="0">
+    <iframe id="iframe" class="p-3" style="width:100%; position: absolute; bottom: 0;" width="100%" frameborder="0">
 {% endblock %}
