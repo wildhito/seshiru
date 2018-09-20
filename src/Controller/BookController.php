@@ -29,7 +29,7 @@ class BookController extends AbstractController
     {
         return [
             "remoteHost" => $this->fetchService->remoteHost(),
-            "sheetUrl" => "https://docs.google.com/spreadsheets/d/".getenv("SPREADSHEET_ID")."/edit#gid=1141467398"
+            "sheetUrl" => $this->stockService->sheetUrl(),
         ];
     }
 

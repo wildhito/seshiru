@@ -15,6 +15,11 @@ class Stock
         $this->sheetRange = getenv("SHEET_RANGE");
     }
 
+    public function sheetUrl()
+    {
+        return "https://docs.google.com/spreadsheets/d/".$this->sheetId."/edit#gid=1141467398";
+    }
+
     public function append($data)
     {
         $client = $this->getGoogleClient();
